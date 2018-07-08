@@ -1,0 +1,144 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import classnames from "classnames";
+
+import { toggleModal, loginUser } from "../../actions/actions";
+
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader
+} from "reactstrap";
+
+class Login extends Component {
+    constructor() {
+        super();
+        this.state = {
+            email: "",
+            password: "",
+            errors: {}
+        };
+
+        this.closeModal = this.closeModal.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        // close Modal
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+    }
+
+    onChange(e) {
+        this.setState({ [e.target.name]: e.target.value });
+    }
+
+    onSubmit(e) {
+        e.preventDefault();
+
+        const userData = {
+            email: this.state.email,
+            password: this.state.password
+        };
+
+        this.props.loginUser(userData);
+    }
+
+    closeModal() {
+        this.props.toggleModal();
+    }
+
+    render() {
+        const { errors } = this.state;
+
+        return (
+            <Modal isOpen={this.props.isOpen} toggle={this.closeModal}>
+                <ModalHeader toggle={this.closeModal}>
+                    Welcome Back!
+                </ModalHeader>
+                <Form onSubmit={this.onSubmit}>
+                    <ModalBody>
+                        <FormGroup>
+                            <Label for="email">Email</Label>
+                            <Input
+                                className={classnames("", {
+                                    "is-invalid":
+                                        errors.data && errors.data.email
+                                })}
+                                type="text"
+                                name="email"
+                                id="email"
+                                value={this.state.email}
+                                onChange={this.onChange}
+                            />
+                            {errors.data &&
+                                errors.data.email && (
+                                    <div className="invalid-feedback">
+                                        {errors.data.email}
+                                    </div>
+                                )}
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="password">Password</Label>
+                            <Input
+                                className={classnames("", {
+                                    "is-invalid":
+                                        errors.data && errors.data.password
+                                })}
+                                type="text"
+                                name="password"
+                                id="password"
+                                value={this.state.password}
+                                onChange={this.onChange}
+                            />
+                            {errors.data &&
+                                errors.data.password && (
+                                    <div className="invalid-feedback">
+                                        {errors.data.password}
+                                    </div>
+                                )}
+                        </FormGroup>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" type="submit">
+                            Login
+                        </Button>{" "}
+                        <Button color="secondary" onClick={this.closeModal}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                </Form>
+            </Modal>
+        );
+    }
+}
+
+Login.propTypes = {
+    toggleModal: PropTypes.func.isRequired,
+    loginUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    isOpen: state.openModal === "loginModal",
+    auth: state.auth,
+    errors: state.errors
+});
+
+export default connect(
+    mapStateToProps,
+    { toggleModal, loginUser }
+)(Login);
