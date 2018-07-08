@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
 
-import { toggleModal, registerUser } from "../../actions/actions";
+import { toggleModal, loginUser } from "../../actions/actions";
 
 import {
     Button,
@@ -17,14 +17,12 @@ import {
     ModalHeader
 } from "reactstrap";
 
-class Register extends Component {
+class Welcome extends Component {
     constructor() {
         super();
         this.state = {
-            username: "",
             email: "",
             password: "",
-            password2: "",
             errors: {}
         };
 
@@ -34,9 +32,7 @@ class Register extends Component {
     }
 
     componentDidMount() {
-        if (this.props.auth.isAuthenticated) {
-            // Close modal
-        }
+        // close Modal
     }
 
     componentWillReceiveProps(nextProps) {
@@ -52,14 +48,12 @@ class Register extends Component {
     onSubmit(e) {
         e.preventDefault();
 
-        const newUser = {
-            name: this.state.name,
+        const userData = {
             email: this.state.email,
-            password: this.state.password,
-            password2: this.state.password2
+            password: this.state.password
         };
 
-        this.props.registerUser(newUser, this.props.history);
+        this.props.loginUser(userData);
     }
 
     closeModal() {
@@ -74,26 +68,7 @@ class Register extends Component {
                 <ModalHeader toggle={this.closeModal}>Welcome!</ModalHeader>
                 <Form onSubmit={this.onSubmit}>
                     <ModalBody>
-                        <FormGroup>
-                            <Label for="name">Full Name</Label>
-                            <Input
-                                className={classnames("", {
-                                    "is-invalid":
-                                        errors.data && errors.data.name
-                                })}
-                                type="text"
-                                name="name"
-                                id="name"
-                                value={this.state.name}
-                                onChange={this.onChange}
-                            />
-                            {errors.data &&
-                                errors.data.name && (
-                                    <div className="invalid-feedback">
-                                        {errors.data.name}
-                                    </div>
-                                )}
-                        </FormGroup>
+                        <p>Please login to begin</p>
                         <FormGroup>
                             <Label for="email">Email</Label>
                             <Input
@@ -113,10 +88,6 @@ class Register extends Component {
                                         {errors.data.email}
                                     </div>
                                 )}
-                            <small className="form-text text-muted">
-                                This site uses Gravatar so if you want a profile
-                                image, use a Gravatar email
-                            </small>
                         </FormGroup>
                         <FormGroup>
                             <Label for="password">Password</Label>
@@ -138,30 +109,10 @@ class Register extends Component {
                                     </div>
                                 )}
                         </FormGroup>
-                        <FormGroup>
-                            <Label for="password2">Confirm Password</Label>
-                            <Input
-                                className={classnames("", {
-                                    "is-invalid":
-                                        errors.data && errors.data.password2
-                                })}
-                                type="text"
-                                name="password2"
-                                id="password2"
-                                value={this.state.password2}
-                                onChange={this.onChange}
-                            />
-                            {errors.data &&
-                                errors.data.password2 && (
-                                    <div className="invalid-feedback">
-                                        {errors.data.password2}
-                                    </div>
-                                )}
-                        </FormGroup>
                     </ModalBody>
                     <ModalFooter>
                         <Button color="primary" type="submit">
-                            Register
+                            Login
                         </Button>{" "}
                         <Button color="secondary" onClick={this.closeModal}>
                             Cancel
@@ -173,20 +124,20 @@ class Register extends Component {
     }
 }
 
-Register.propTypes = {
+Welcome.propTypes = {
     toggleModal: PropTypes.func.isRequired,
-    registerUser: PropTypes.func.isRequired,
+    loginUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired,
     errors: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-    isOpen: state.openModal === "registerModal",
+    isOpen: state.openModal === "welcomeModal",
     auth: state.auth,
     errors: state.errors
 });
 
 export default connect(
     mapStateToProps,
-    { toggleModal, registerUser }
-)(Register);
+    { toggleModal, loginUser }
+)(Welcome);

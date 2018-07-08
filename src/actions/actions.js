@@ -31,7 +31,7 @@ export const registerUser = (userData, history) => dispatch => {
             });
             dispatch({
                 type: OPEN_MODAL,
-                payload: "loginModal"
+                payload: "welcomeModal"
             });
         })
         .catch(err => {

@@ -17,6 +17,7 @@ import {
 
 import Register from "../auth/Register";
 import Login from "../auth/Login";
+import Welcome from "../auth/Welcome";
 
 export class NavBar extends Component {
     openModal(modalName) {
@@ -44,6 +45,31 @@ export class NavBar extends Component {
                         </Button>
                     </NavLink>
                 </NavItem>
+                <p
+                    className="text-info"
+                    style={{
+                        marginTop: "15px",
+                        marginLeft: "10px"
+                    }}
+                >
+                    {this.props.auth.user.name}
+                </p>
+                {this.props.auth && this.props.auth.user.avatar ? (
+                    <img
+                        src={this.props.auth.user.avatar}
+                        height="30px"
+                        width="30px"
+                        alt="User Avatar"
+                        style={{
+                            borderRadius: "20px",
+                            marginTop: "13px",
+                            marginLeft: "25px",
+                            marginRight: "15px"
+                        }}
+                    />
+                ) : (
+                    ""
+                )}
             </Nav>
         );
 
@@ -73,6 +99,7 @@ export class NavBar extends Component {
                 </NavItem>
                 <Register />
                 <Login />
+                <Welcome />
             </Nav>
         );
 
