@@ -125,7 +125,7 @@ class Register extends Component {
                                     "is-invalid":
                                         errors.data && errors.data.password
                                 })}
-                                type="text"
+                                type="password"
                                 name="password"
                                 id="password"
                                 value={this.state.password}
@@ -145,7 +145,7 @@ class Register extends Component {
                                     "is-invalid":
                                         errors.data && errors.data.password2
                                 })}
-                                type="text"
+                                type="password"
                                 name="password2"
                                 id="password2"
                                 value={this.state.password2}

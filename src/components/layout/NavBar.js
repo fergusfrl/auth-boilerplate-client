@@ -108,7 +108,7 @@ export class NavBar extends Component {
                 <NavbarBrand href="#">
                     <Row>
                         <Col>
-                            <h1 className="text-info">App Title</h1>
+                            <h1 className="text-info">App Tittle</h1>
                         </Col>
                     </Row>
                 </NavbarBrand>

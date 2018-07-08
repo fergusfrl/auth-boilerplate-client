@@ -97,7 +97,7 @@ class Login extends Component {
                                     "is-invalid":
                                         errors.data && errors.data.password
                                 })}
-                                type="text"
+                                type="password"
                                 name="password"
                                 id="password"
                                 value={this.state.password}
