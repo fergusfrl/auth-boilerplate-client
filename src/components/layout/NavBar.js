@@ -7,17 +7,22 @@ import { toggleModal, logoutUser } from "../../actions/actions";
 import {
     Button,
     Col,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
     Nav,
     Navbar,
     NavbarBrand,
     NavItem,
     NavLink,
-    Row
+    Row,
+    UncontrolledDropdown
 } from "reactstrap";
 
 import Register from "../auth/Register";
 import Login from "../auth/Login";
 import Welcome from "../auth/Welcome";
+import ChangePassword from "../auth/ChangePassword";
 
 export class NavBar extends Component {
     openModal(modalName) {
@@ -34,42 +39,56 @@ export class NavBar extends Component {
 
         const authLinks = (
             <Nav>
-                <NavItem>
-                    <NavLink>
-                        <Button
-                            outline
-                            color="info"
-                            onClick={this.onLogoutClick.bind(this)}
-                        >
-                            Logout
-                        </Button>
-                    </NavLink>
-                </NavItem>
-                <p
-                    className="text-info"
+                <UncontrolledDropdown
+                    nav
+                    inNavbar
                     style={{
-                        marginTop: "15px",
-                        marginLeft: "10px"
+                        display: "inline",
+                        marginRight: "1.2em"
                     }}
                 >
-                    {this.props.auth.user.name}
-                </p>
-                {this.props.auth && this.props.auth.user.avatar ? (
-                    <img
-                        src={this.props.auth.user.avatar}
-                        height="30px"
-                        width="30px"
-                        alt="User Avatar"
-                        style={{
-                            borderRadius: "20px",
-                            marginTop: "13px",
-                            marginLeft: "25px",
-                            marginRight: "15px"
-                        }}
-                    />
-                ) : (
-                    ""
-                )}
+                    <DropdownToggle color="dark">
+                        <p
+                            className="text-info"
+                            style={{
+                                marginTop: "1.3em",
+                                marginRight: "1.2em",
+                                display: "inline"
+                            }}
+                        >
+                            {this.props.auth.user.name}
+                        </p>
+                        {this.props.auth && this.props.auth.user.avatar ? (
+                            <img
+                                src={this.props.auth.user.avatar}
+                                height="30px"
+                                width="30px"
+                                alt="User Avatar"
+                                style={{
+                                    borderRadius: "20px",
+                                    display: "inline"
+                                }}
+                            />
+                        ) : (
+                            ""
+                        )}
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                        <DropdownItem
+                            onClick={this.openModal.bind(
+                                this,
+                                "changePasswordModal"
+                            )}
+                        >
+                            Change Password
+                        </DropdownItem>
+                        <DropdownItem divider />
+                        <DropdownItem onClick={this.onLogoutClick.bind(this)}>
+                            Logout
+                        </DropdownItem>
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+                <ChangePassword />
             </Nav>
         );
 

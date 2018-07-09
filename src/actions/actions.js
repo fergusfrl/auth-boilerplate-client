@@ -86,6 +86,29 @@ export const setCurrentUser = decoded => {
     };
 };
 
+// Change user password
+export const changePassword = userData => dispatch => {
+    axios
+        .put(serverLocation + "/users/login", userData)
+        .then(res => {
+            dispatch({
+                type: CLOSE_MODAL,
+                payload: "changePasswordModal"
+            });
+            alert("Password successfully changed");
+        })
+        .catch(err => {
+            dispatch({
+                type: GET_ERRORS,
+                payload: err.response
+            });
+            dispatch({
+                type: OPEN_MODAL,
+                payload: "changePasswordModal"
+            });
+        });
+};
+
 // Log user out
 export const logoutUser = () => dispatch => {
     // Remove token from localstorage
