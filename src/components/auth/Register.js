@@ -10,6 +10,8 @@ import {
     Form,
     FormGroup,
     Input,
+    InputGroup,
+    InputGroupAddon,
     Label,
     Modal,
     ModalBody,
@@ -25,12 +27,14 @@ class Register extends Component {
             email: "",
             password: "",
             password2: "",
+            showPassword: false,
             errors: {}
         };
 
         this.closeModal = this.closeModal.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+        this.togglePassword = this.togglePassword.bind(this);
     }
 
     componentDidMount() {
@@ -43,6 +47,10 @@ class Register extends Component {
         if (nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
+    }
+
+    togglePassword() {
+        this.setState({ showPassword: !this.state.showPassword });
     }
 
     onChange(e) {
@@ -120,43 +128,62 @@ class Register extends Component {
                         </FormGroup>
                         <FormGroup>
                             <Label for="password">Password</Label>
-                            <Input
-                                className={classnames("", {
-                                    "is-invalid":
-                                        errors.data && errors.data.password
-                                })}
-                                type="password"
-                                name="password"
-                                id="password"
-                                value={this.state.password}
-                                onChange={this.onChange}
-                            />
-                            {errors.data &&
-                                errors.data.password && (
-                                    <div className="invalid-feedback">
-                                        {errors.data.password}
-                                    </div>
-                                )}
+                            <InputGroup>
+                                <Input
+                                    className={classnames("", {
+                                        "is-invalid":
+                                            errors.data && errors.data.password
+                                    })}
+                                    type={
+                                        this.state.showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
+                                    name="password"
+                                    id="password"
+                                    value={this.state.password}
+                                    onChange={this.onChange}
+                                />
+                                <InputGroupAddon addonType="append">
+                                    <Button onClick={this.togglePassword}>
+                                        {this.state.showPassword
+                                            ? "Hide"
+                                            : "Show"}
+                                    </Button>
+                                </InputGroupAddon>
+                                {errors.data &&
+                                    errors.data.password && (
+                                        <div className="invalid-feedback">
+                                            {errors.data.password}
+                                        </div>
+                                    )}
+                            </InputGroup>
                         </FormGroup>
                         <FormGroup>
                             <Label for="password2">Confirm Password</Label>
-                            <Input
-                                className={classnames("", {
-                                    "is-invalid":
-                                        errors.data && errors.data.password2
-                                })}
-                                type="password"
-                                name="password2"
-                                id="password2"
-                                value={this.state.password2}
-                                onChange={this.onChange}
-                            />
-                            {errors.data &&
-                                errors.data.password2 && (
-                                    <div className="invalid-feedback">
-                                        {errors.data.password2}
-                                    </div>
-                                )}
+                            <InputGroup>
+                                <Input
+                                    className={classnames("", {
+                                        "is-invalid":
+                                            errors.data && errors.data.password2
+                                    })}
+                                    type={
+                                        this.state.showPassword
+                                            ? "text"
+                                            : "password"
+                                    }
+                                    name="password2"
+                                    id="password2"
+                                    value={this.state.password2}
+                                    onChange={this.onChange}
+                                />
+                                {errors.data &&
+                                    errors.data.password2 && (
+                                        <div className="invalid-feedback">
+                                            {errors.data.password2}
+                                        </div>
+                                    )}
+                            </InputGroup>
                         </FormGroup>
                     </ModalBody>
                     <ModalFooter>

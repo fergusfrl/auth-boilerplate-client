@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { toggleModal, logoutUser } from "../../actions/actions";
+import { toggleModal } from "../../actions/actions";
 
 import {
     Button,
@@ -23,15 +23,12 @@ import Register from "../auth/Register";
 import Login from "../auth/Login";
 import Welcome from "../auth/Welcome";
 import ChangePassword from "../auth/ChangePassword";
+import Success from "../util/Success";
+import Logout from "../auth/Logout";
 
 export class NavBar extends Component {
     openModal(modalName) {
         this.props.toggleModal(modalName);
-    }
-
-    onLogoutClick(e) {
-        e.preventDefault();
-        this.props.logoutUser();
     }
 
     render() {
@@ -83,12 +80,16 @@ export class NavBar extends Component {
                             Change Password
                         </DropdownItem>
                         <DropdownItem divider />
-                        <DropdownItem onClick={this.onLogoutClick.bind(this)}>
+                        <DropdownItem
+                            onClick={this.openModal.bind(this, "logoutModal")}
+                        >
                             Logout
                         </DropdownItem>
                     </DropdownMenu>
                 </UncontrolledDropdown>
                 <ChangePassword />
+                <Success />
+                <Logout />
             </Nav>
         );
 
@@ -139,7 +140,6 @@ export class NavBar extends Component {
 
 NavBar.propTypes = {
     toggleModal: PropTypes.func.isRequired,
-    logoutUser: PropTypes.func.isRequired,
     auth: PropTypes.object.isRequired
 };
 
@@ -150,5 +150,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    { toggleModal, logoutUser }
+    { toggleModal }
 )(NavBar);

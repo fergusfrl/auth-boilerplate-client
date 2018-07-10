@@ -21,7 +21,6 @@ class ChangePassword extends Component {
     constructor() {
         super();
         this.state = {
-            email: "",
             password: "",
             newPassword: "",
             newPassword2: "",
@@ -52,8 +51,10 @@ class ChangePassword extends Component {
     onSubmit(e) {
         e.preventDefault();
 
+        console.log(this.props.auth.user.email);
+
         const updateUser = {
-            email: this.state.email,
+            email: this.props.auth.user.email,
             password: this.state.password,
             newPassword: this.state.newPassword,
             newPassword2: this.state.newPassword2
@@ -76,26 +77,6 @@ class ChangePassword extends Component {
                 </ModalHeader>
                 <Form onSubmit={this.onSubmit}>
                     <ModalBody>
-                        <FormGroup>
-                            <Label for="email">Email</Label>
-                            <Input
-                                className={classnames("", {
-                                    "is-invalid":
-                                        errors.data && errors.data.email
-                                })}
-                                type="text"
-                                name="email"
-                                id="email"
-                                value={this.state.email}
-                                onChange={this.onChange}
-                            />
-                            {errors.data &&
-                                errors.data.email && (
-                                    <div className="invalid-feedback">
-                                        {errors.data.email}
-                                    </div>
-                                )}
-                        </FormGroup>
                         <FormGroup>
                             <Label for="password">Current Password</Label>
                             <Input

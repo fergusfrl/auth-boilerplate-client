@@ -95,7 +95,10 @@ export const changePassword = userData => dispatch => {
                 type: CLOSE_MODAL,
                 payload: "changePasswordModal"
             });
-            alert("Password successfully changed");
+            dispatch({
+                type: OPEN_MODAL,
+                payload: "successModal"
+            });
         })
         .catch(err => {
             dispatch({
