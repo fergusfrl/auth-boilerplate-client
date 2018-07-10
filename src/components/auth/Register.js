@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
+import zxcvbn from "zxcvbn";
 
 import { toggleModal, registerUser } from "../../actions/actions";
 
@@ -16,7 +17,8 @@ import {
     Modal,
     ModalBody,
     ModalFooter,
-    ModalHeader
+    ModalHeader,
+    Progress
 } from "reactstrap";
 
 class Register extends Component {
@@ -28,6 +30,8 @@ class Register extends Component {
             password: "",
             password2: "",
             showPassword: false,
+            passwordScore: 0,
+            passwordColor: "",
             errors: {}
         };
 
@@ -35,6 +39,7 @@ class Register extends Component {
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
         this.togglePassword = this.togglePassword.bind(this);
+        this.onPasswordChange = this.onPasswordChange.bind(this);
     }
 
     componentDidMount() {
@@ -55,6 +60,41 @@ class Register extends Component {
 
     onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
+    }
+
+    onPasswordChange(e) {
+        var checkPassword = zxcvbn(e.target.value),
+            score = checkPassword.score + 1,
+            color;
+
+        score = e.target.value === "" ? 0 : score;
+
+        switch (score) {
+            case 0:
+                color = "danger";
+                break;
+            case 1:
+                color = "danger";
+                break;
+            case 2:
+                color = "warning";
+                break;
+            case 3:
+                color = "success";
+                break;
+            case 4:
+                color = "success";
+                score = 5;
+                break;
+            default:
+                color = "success";
+        }
+
+        this.setState({
+            [e.target.name]: e.target.value,
+            passwordScore: score,
+            passwordColor: color
+        });
     }
 
     onSubmit(e) {
@@ -142,7 +182,7 @@ class Register extends Component {
                                     name="password"
                                     id="password"
                                     value={this.state.password}
-                                    onChange={this.onChange}
+                                    onChange={this.onPasswordChange}
                                 />
                                 <InputGroupAddon addonType="append">
                                     <Button onClick={this.togglePassword}>
@@ -158,6 +198,12 @@ class Register extends Component {
                                         </div>
                                     )}
                             </InputGroup>
+                            <Progress
+                                max="5"
+                                value={this.state.passwordScore}
+                                color={this.state.passwordColor}
+                                style={{ marginTop: ".5em" }}
+                            />
                         </FormGroup>
                         <FormGroup>
                             <Label for="password2">Confirm Password</Label>
