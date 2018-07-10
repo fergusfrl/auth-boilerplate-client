@@ -2,7 +2,13 @@ import axios from "axios";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
 
-import { OPEN_MODAL, CLOSE_MODAL, GET_ERRORS, SET_CURRENT_USER } from "./types";
+import {
+    CLOSE_MODAL,
+    CLEAR_ERRORS,
+    GET_ERRORS,
+    OPEN_MODAL,
+    SET_CURRENT_USER
+} from "./types";
 
 const serverLocation = "http://localhost:3031";
 
@@ -14,9 +20,8 @@ export const toggleModal = modal => dispatch => {
             payload: modal
         });
     } else {
-        dispatch({
-            type: CLOSE_MODAL
-        });
+        dispatch({ type: CLOSE_MODAL });
+        dispatch({ type: CLEAR_ERRORS });
     }
 };
 
@@ -29,6 +34,7 @@ export const registerUser = (userData, history) => dispatch => {
                 type: CLOSE_MODAL,
                 payload: "registerModal"
             });
+            dispatch({ type: CLEAR_ERRORS });
             dispatch({
                 type: OPEN_MODAL,
                 payload: "welcomeModal"
@@ -65,6 +71,7 @@ export const loginUser = userData => dispatch => {
                 type: CLOSE_MODAL,
                 payload: "loginModal"
             });
+            dispatch({ type: CLEAR_ERRORS });
         })
         .catch(err => {
             dispatch({
@@ -95,6 +102,7 @@ export const changePassword = userData => dispatch => {
                 type: CLOSE_MODAL,
                 payload: "changePasswordModal"
             });
+            dispatch({ type: CLEAR_ERRORS });
             dispatch({
                 type: OPEN_MODAL,
                 payload: "successModal"
